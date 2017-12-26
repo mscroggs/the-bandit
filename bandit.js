@@ -34,7 +34,7 @@ dataDefault = Array(
     0// total clicks in row 5
 )
 
-data = dataDefault
+data = dataDefault.slice()
 
 clicks = Array()
 
@@ -50,20 +50,14 @@ function click(n){
             clicks[clicks.length] = Array(milli(),n)
             // first half
             data[0]++
-            data[2] = Math.max(data[2],count(blocks,1))
-            data[4] = Math.max(data[4],count(blocks,2))
-            data[8] = Math.min(data[8],count(blocks,0))
         } else {
             // second half
             data[1]++
-            data[3] = Math.max(data[3],count(blocks,1))
-            data[5] = Math.max(data[5],count(blocks,2))
-            data[6] = Math.min(data[6],count(blocks,2))
-            data[7] = Math.min(data[7],count(blocks,1))
-            data[9] = Math.min(data[9],count(blocks,0))
         }
-        data[10] = Math.max(data[10],milli()-prev)
-        data[11] = Math.min(data[11],milli()-prev)
+        if(prev != 0){
+            data[10] = Math.max(data[10],milli()-prev)
+            data[11] = Math.min(data[11],milli()-prev)
+        }
         prev = milli()
         data[12+Math.floor(n/5)] += 1
         data[17+n%5] += 1
@@ -73,6 +67,19 @@ function change(n){
     blocks[n] += 1
     blocks[n] %= 3
     document.getElementById("bandit-"+n).style.backgroundColor = cols[blocks[n]]
+    if(!playback){
+        // first half
+        data[2] = Math.max(data[2],count(blocks,1))
+        data[4] = Math.max(data[4],count(blocks,2))
+        data[8] = Math.min(data[8],count(blocks,0))
+    } else {
+        // second half
+        data[3] = Math.max(data[3],count(blocks,1))
+        data[5] = Math.max(data[5],count(blocks,2))
+        data[6] = Math.min(data[6],count(blocks,2))
+        data[7] = Math.min(data[7],count(blocks,1))
+        data[9] = Math.min(data[9],count(blocks,0))
+    }
 }
 function sec(){
     return 20-Math.floor(milli() / 1000)
@@ -86,16 +93,67 @@ function millinow(){
 function start(){
     blocks = Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
     clicks = Array()
-    data = dataDefault
+    data = dataDefault.slice()
+    prev = 0
     for(var n=0;n<25;n++){document.getElementById("bandit-"+n).style.backgroundColor = cols[0]}
     running = true
-    document.getElementById("starter").style.display = "none"
+    playback = false
+    document.getElementById("startinfo").style.display = "none"
     startTime = millinow()
     ticker = setInterval(tick,50)
 }
 function stop(){
     clearInterval(ticker)
     running = false
+    var resulter;
+    if(window.XMLHttpRequest){resulter=new XMLHttpRequest();}
+    else {resulter=new ActiveXObject('Microsoft.XMLHTTP');}
+    resulter.onreadystatechange=function(){
+        if (resulter.readyState==4 && resulter.status==200){
+            document.getElementById("result").innerHTML = resulter.responseText
+            document.getElementById("endinfo").style.display = "block"
+        }
+    }
+    resulter.open('POST','get_result.php',true);
+    resulter.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    resulter.send(postdata());
+}
+
+function thanks(){
+    document.getElementById("endinfo").style.display = "none"
+    document.getElementById("thankinfo").style.display = "block"
+}
+function again(){
+    document.getElementById("thankinfo").style.display = "none"
+    document.getElementById("startinfo").style.display = "block"
+}
+function yes(){
+    savedata("yes")
+    thanks()
+}
+function no(){
+    savedata("no")
+    thanks()
+}
+function savedata(r){
+    var saver;
+    if(window.XMLHttpRequest){saver=new XMLHttpRequest();}
+    else {saver=new ActiveXObject('Microsoft.XMLHTTP');}
+    saver.onreadystatechange=function(){
+        if (saver.readyState==4 && saver.status==200){
+            thanks()
+        }
+    }
+    saver.open('POST','save_data.php',true);
+    saver.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    saver.send("result="+r+"&"+postdata());
+}
+function postdata(){
+    send_me = Array()
+    for(i=0;i<data.length;i++){
+        send_me[send_me.length] = "data"+i+"="+data[i]
+    }
+    return send_me.join("&")
 }
 function tick(){
     left = sec()
@@ -109,8 +167,6 @@ function tick(){
     if(left<10){document.getElementById("timer").innerHTML = "0:0"+left}
     else {document.getElementById("timer").innerHTML = "0:"+left}
     if(left<=0){stop()}
-
-    document.getElementById("debug").value = data
 }
 
 document.getElementById("timer").innerHTML = "0:20"
