@@ -136,7 +136,7 @@ function stop(){
             for(var i=0;i<resultls.length;i++){
                 out += "<br />"
                 out += banditResults[i][resultls[i]]
-                out += " &nbsp; <span id='r"+i+"'><a href='javascript:yes("+i+")'>yes</a> <a href='javascript:no("+i+")'>no</a></span>"
+                out += ": <span id='r"+i+"'><a href='javascript:yes("+i+")'>yes</a> <a href='javascript:no("+i+")'>no</a></span>"
             }
             document.getElementById("endinfo").innerHTML = out
             document.getElementById("endinfo").style.display = "block"
@@ -157,7 +157,7 @@ function again(){
 }
 function yes(i){
     actuals[i] = resultls[i]
-    document.getElementById("r"+i).innerHTML = "yes"
+    document.getElementById("r"+i).innerHTML = "<b>yes</b>"
     if(count(actuals,-1)==0){
         savedata()
         thanks()
@@ -165,7 +165,7 @@ function yes(i){
 }
 function no(i){
     actuals[i] = 1-resultls[i]
-    document.getElementById("r"+i).innerHTML = "no"
+    document.getElementById("r"+i).innerHTML = "<b>no</b>"
     if(count(actuals,-1)==0){
         savedata()
         thanks()
@@ -177,6 +177,7 @@ function savedata(r){
     else {saver=new ActiveXObject('Microsoft.XMLHTTP');}
     saver.onreadystatechange=function(){
         if (saver.readyState==4 && saver.status==200){
+            alert(saver.responseText)
             thanks()
         }
     }
@@ -193,8 +194,8 @@ function postdata(){
 }
 function postactual(){
     send_me = Array()
-    for(var i=0;i<actual.length;i++){
-        send_me[send_me.length] = "actual"+i+"="+actual[i]
+    for(var i=0;i<actuals.length;i++){
+        send_me[send_me.length] = "actual"+i+"="+actuals[i]
     }
     return send_me.join("&")
 }
