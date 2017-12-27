@@ -39,9 +39,6 @@ for($i=0;$i<5;$i++){
 <a class='starter' href='javascript:start()'>Begin</a>
 </div>
 <div id='endinfo'>
-<h1>Results</h1>
-The bandit thinks that you are <span id='result'></span>.
-Is the bandit correct? <a href='javascript:yes()'>yes</a> <a href='javascript:no()'>no</a>
 </div>
 <div id='thankinfo'>
 <h1>Thanks</h1>

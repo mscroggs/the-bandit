@@ -1,3 +1,10 @@
+banditResults = Array(
+    Array("male","female"),
+    Array("left-handed","right-handed"),
+    Array("happy","sad"),
+    Array("wide awake","sleepy")
+)
+
 function count(arr, value){
     out = 0
     for(var i=0;i<arr.length;i++){
@@ -6,6 +13,8 @@ function count(arr, value){
     return out
 }
 
+resultls = Array()
+actuals = Array(-1,-1,-1,-1);
 running = false
 blocks = Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 
@@ -95,6 +104,7 @@ function start(){
     clicks = Array()
     data = dataDefault.slice()
     prev = 0
+    actuals = Array(-1,-1,-1,-1);
     for(var n=0;n<25;n++){document.getElementById("bandit-"+n).style.backgroundColor = cols[0]}
     running = true
     playback = false
@@ -110,7 +120,25 @@ function stop(){
     else {resulter=new ActiveXObject('Microsoft.XMLHTTP');}
     resulter.onreadystatechange=function(){
         if (resulter.readyState==4 && resulter.status==200){
-            document.getElementById("result").innerHTML = resulter.responseText
+            resultls = resulter.responseText.split(",")
+            out = "<h1>Results</h1>"
+            out += "The bandit thinks that you are "
+            for(var i=0;i<resultls.length;i++){
+                out += banditResults[i][resultls[i]]
+                if(i==resultls.length-2){
+                    out += ", and "
+                } else if(i<resultls.length-2){
+                    out += ", "
+                }
+            }
+            out += ". "
+            out += "Is the bandit correct?"
+            for(var i=0;i<resultls.length;i++){
+                out += "<br />"
+                out += banditResults[i][resultls[i]]
+                out += " &nbsp; <span id='r"+i+"'><a href='javascript:yes("+i+")'>yes</a> <a href='javascript:no("+i+")'>no</a></span>"
+            }
+            document.getElementById("endinfo").innerHTML = out
             document.getElementById("endinfo").style.display = "block"
         }
     }
@@ -127,13 +155,21 @@ function again(){
     document.getElementById("thankinfo").style.display = "none"
     document.getElementById("startinfo").style.display = "block"
 }
-function yes(){
-    savedata("yes")
-    thanks()
+function yes(i){
+    actuals[i] = resultls[i]
+    document.getElementById("r"+i).innerHTML = "yes"
+    if(count(actuals,-1)==0){
+        savedata()
+        thanks()
+    }
 }
-function no(){
-    savedata("no")
-    thanks()
+function no(i){
+    actuals[i] = 1-resultls[i]
+    document.getElementById("r"+i).innerHTML = "no"
+    if(count(actuals,-1)==0){
+        savedata()
+        thanks()
+    }
 }
 function savedata(r){
     var saver;
@@ -146,12 +182,19 @@ function savedata(r){
     }
     saver.open('POST','save_data.php',true);
     saver.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    saver.send("result="+r+"&"+postdata());
+    saver.send(postactual()+"&"+postdata());
 }
 function postdata(){
     send_me = Array()
-    for(i=0;i<data.length;i++){
+    for(var i=0;i<data.length;i++){
         send_me[send_me.length] = "data"+i+"="+data[i]
+    }
+    return send_me.join("&")
+}
+function postactual(){
+    send_me = Array()
+    for(var i=0;i<actual.length;i++){
+        send_me[send_me.length] = "actual"+i+"="+actual[i]
     }
     return send_me.join("&")
 }
