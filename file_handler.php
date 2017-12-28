@@ -27,16 +27,6 @@ function save($data, $ans){
     fclose($f);
 }
 
-function saveQ($Q){
-    global $SAVEPATH;
-    saveMatrix($Q, $SAVEPATH."Q.matrix");
-}
-
-function loadQ(){
-    global $SAVEPATH;
-    return loadMatrix($SAVEPATH."Q.matrix");
-}
-
 function saveR($R){
     global $SAVEPATH;
     saveMatrix($R, $SAVEPATH."R.matrix");
