@@ -21,7 +21,7 @@ save($d,$a);
 $bs = loadbs();
 $R = loadR();
 
-add_data($bs,$R,$a,$d);
+add_data($R,$bs,$a,$d);
 
 savebs($bs);
 saveR($R);

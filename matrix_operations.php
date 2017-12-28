@@ -1,9 +1,40 @@
 <?php
 
-function add_data(&$bs,&$R,$a,$d){
+function print_matrix($A){
+    foreach($A as $row){
+        foreach($row as $entry){
+            echo($entry." ");
+        }
+        echo("\n");
+    }
+}
+
+function print_matrix_one_line($A){
+    foreach($A as $row){
+        foreach($row as $entry){
+            echo($entry." ");
+        }
+        echo("; ");
+    }
+    echo("\n");
+}
+
+function givens($a,$b){
+    $d = sqrt($a*$a+$b*$b);
+    return Array($a/$d,-$b/$d);
+}
+
+function add_data(&$R,&$bs,$a,$d){
+    $cs = Array();
+    $ss = Array();
     for($j=0;$j<count($bs);$j++){
-        $c = $R[$j][$j];
-        $s = $a[$j];
+        $cs[] = $R[$j][$j];
+        $ss[] = $a[$j];
+    }
+    for($j=0;$j<count($bs);$j++){
+        //$c = $cs[$j];
+        //$s = $ss[$j];
+        list($c,$s) = givens($R[$j][$j],$a[$j]);
         $R[$j][$j] = $c*$R[$j][$j] - $s * $a[$j];
         // update jth row of R and u
         $t1 = Array();
@@ -14,14 +45,14 @@ function add_data(&$bs,&$R,$a,$d){
         }
         for($k=$j+1;$k<count($bs);$k++){
             $R[$j][$k] = $c * $t1[$k] - $s * $t2[$k];
-            $a[$j] = $c * $t1[$k] + $s * $t2[$k];
+            $a[$k] = $s * $t1[$k] + $c * $t2[$k]; /// CHECK THIS
         }
         // update jth row of d and mu
         $t1 = $bs[$j];
         $t2 = $d;
         for($k=0;$k<count($bs[$j]);$k++){
             $bs[$j][$k] = $c*$t1[$k] - $s * $t2[$k];
-            $d[$k] = $c*$t1[$k] + $s * $t2[$k];
+            $d[$k] = $s*$t1[$k] + $c * $t2[$k];
         }
     }
 }
@@ -84,14 +115,17 @@ function matmat($A,$B){
 }
 
 function solve_upper_tri($A,$B){
-    $out = array_fill(0,count($A),0);
     for($i=count($A)-1;$i>=0;$i--){
-        $out[$i] -= inner_product($A[$i],$out);
-        if($A[$i][$i] != 0){
-            $out[$i] /= $A[$i][$i];
+        for($j=0;$j<count($B[0]);$j++){
+            for($k=$i+1;$k<count($B);$k++){
+                $B[$i][$j] -= $A[$i][$k] * $B[$k][$j];
+            }
+            if($A[$i][$i] != 0){
+                $B[$i][$j] /= $A[$i][$i];
+            }
         }
     }
-    return $out;
+    return $B;
 }
 
 ?>
