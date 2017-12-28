@@ -21,6 +21,7 @@ function print_matrix_one_line($A){
 
 function givens($a,$b){
     $d = sqrt($a*$a+$b*$b);
+    if($d==0){return Array(0,0);}
     return Array($a/$d,-$b/$d);
 }
 
@@ -32,11 +33,8 @@ function add_data(&$R,&$bs,$a,$d){
         $ss[] = $a[$j];
     }
     for($j=0;$j<count($bs);$j++){
-        //$c = $cs[$j];
-        //$s = $ss[$j];
         list($c,$s) = givens($R[$j][$j],$a[$j]);
         $R[$j][$j] = $c*$R[$j][$j] - $s * $a[$j];
-        // update jth row of R and u
         $t1 = Array();
         $t2 = Array();
         for($k=$j+1;$k<count($bs);$k++){
@@ -45,9 +43,8 @@ function add_data(&$R,&$bs,$a,$d){
         }
         for($k=$j+1;$k<count($bs);$k++){
             $R[$j][$k] = $c * $t1[$k] - $s * $t2[$k];
-            $a[$k] = $s * $t1[$k] + $c * $t2[$k]; /// CHECK THIS
+            $a[$k] = $s * $t1[$k] + $c * $t2[$k];
         }
-        // update jth row of d and mu
         $t1 = $bs[$j];
         $t2 = $d;
         for($k=0;$k<count($bs[$j]);$k++){

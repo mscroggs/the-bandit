@@ -57,17 +57,10 @@ if(!abseq($res[0][0],3) || !abseq($res[1][0],1)){
 }
 echo("=============\n");
 
-if($fail == 0){
-    Gecho("All ".$pass." tests passed.\n");
-} else {
-    Gecho($pass." tests passed. ");
-    Gecho($fail." tests failed.\n");
-}
-
 /*************************************/
 /**** test multi QR decomposition ****/
 /*************************************/
-$mat = Array(Array(1,0),Array(0,1));
+$mat = Array(Array(0,0),Array(0,0));
 $vec = Array(Array(0),Array(0));
 echo("testing multi QR decomposition\n");
 add_data($mat,$vec,Array(0.6,1.2),Array(1));
@@ -85,6 +78,18 @@ if(!abseq($mat[0][0],1) || !abseq($mat[0][1],2.6) || !abseq($mat[1][0],0) || !ab
 }
 echo("=============\n");
 
+
+
+/*******************/
+/*** * summary * ***/
+/*******************/
+
+if($fail == 0){
+    Gecho("All ".$pass." tests passed.\n");
+} else {
+    Gecho($pass." tests passed. ");
+    Gecho($fail." tests failed.\n");
+}
 
 
 ?>
