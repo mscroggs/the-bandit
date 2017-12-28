@@ -1,2 +1,6 @@
 .*.swp
 data.txt
+Q.matrix
+R.matrix
+b.vector
+config.php

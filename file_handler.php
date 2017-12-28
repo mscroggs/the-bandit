@@ -1,9 +1,10 @@
 <?php
 
-/* TODO: swap this file out for a file that reads writes using mysql */
+include_once("config.php");
 
 function load_all(){
-    $c = file_get_contents("data.txt");
+    global $SAVEPATH;
+    $c = file_get_contents($SAVEPATH."data.txt");
     $c = explode("\n",$c);
     $out = Array();
     foreach($c as $item){
@@ -20,9 +21,61 @@ function wrapup($ls){
 }
 
 function save($data, $ans){
-    $f = fopen("data.txt","a");
+    global $SAVEPATH;
+    $f = fopen($SAVEPATH."data.txt","a");
     fwrite($f, wrapup($data)."|".wrapup($ans));
     fclose($f);
+}
+
+function saveQ($Q){
+    global $SAVEPATH;
+    saveMatrix($Q, $SAVEPATH."Q.matrix");
+}
+
+function loadQ(){
+    global $SAVEPATH;
+    return loadMatrix($SAVEPATH."Q.matrix");
+}
+
+function saveR($R){
+    global $SAVEPATH;
+    saveMatrix($R, $SAVEPATH."R.matrix");
+}
+
+function loadR(){
+    global $SAVEPATH;
+    return loadMatrix($SAVEPATH."R.matrix");
+}
+
+function savebs($b){
+    global $SAVEPATH;
+    saveMatrix($b, $SAVEPATH."b.vector");
+}
+
+function loadbs(){
+    global $SAVEPATH;
+    return loadMatrix($SAVEPATH."b.vector");
+}
+
+function saveMatrix($mat, $file){
+    $out = "";
+    foreach($mat as $row){
+        $out .= join(",",$row);
+        $out .= "\n";
+    }
+    $f = fopen($file, "w");
+    fwrite($f, $out);
+    fclose($f);
+}
+
+function loadMatrix($file){
+    $c = file_get_contents($file);
+    $c = explode("\n",$c);
+    $out = Array();
+    foreach($c as $row){if($row != ""){
+        $out[] = explode(",",$row);
+    }}
+    return $out;
 }
 
 ?>
