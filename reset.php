@@ -7,12 +7,14 @@ function zeromat($r,$c){
 }
 
 saveR(zeromat(20,20));
-
 savebs(zeromat(20,4));
+savescores(zeromat(4,2));
 
 $f = fopen($SAVEPATH."data.txt","w");
 fclose($f);
 
 end_lock();
+
+shell_exec("chmod 777 ".$SAVEPATH."R.matrix ".$SAVEPATH."b.vector ".$SAVEPATH."data.txt ".$SAVEPATH."_lock_ ".$SAVEPATH."scores.txt");
 
 ?>
