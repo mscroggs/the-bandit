@@ -197,6 +197,7 @@ function savedata(){
     }
     saver.open('POST','save_data.php',true);
     saver.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // TODO: send and keep track of number of correct / incorrect guesses for each category
     saver.send(postactual()+"&"+postdata());
 }
 function postdata(){
