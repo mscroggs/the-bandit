@@ -8,11 +8,9 @@ a.starter {display:block;border:3px solid black;width:181px;height:51px;position
            text-decoration:none;margin-top:5px}
 a.starter:hover {color:red}
 #timer {width:415px;text-align:right;font-family:monospace;font-size:12pt}
-#startinfo, #endinfo, #thankinfo {display:block;position:relative;border:3px solid black;
-            background-color:white;text-align:center;box-shadow:0px 0px 4px 2px white;color:black}
-#startinfo, #endinfo {width:301px;height:351px;top:-389px;left:57px; margin-bottom:-357px}
-#thankinfo {width:301px;height:171px;top:-303px;left:57px; margin-bottom:-177px}
-#endinfo, #thankinfo {display:none}
+#infobox {display:block;position:relative;border:3px solid black;
+          background-color:white;text-align:center;box-shadow:0px 0px 4px 2px white;color:black;
+          width:301px;height:351px;top:-389px;left:57px; margin-bottom:-357px;display:none}
 
 #startinfo h1, #endinfo h1, #thankinfo h1 {margin:5px}
 
@@ -34,15 +32,5 @@ for($i=0;$i<5;$i++){
 
 ?>
 </div>
-<div id='startinfo'>
-<h1>The Bandit</h1>
-<a class='starter' href='javascript:start()'>Begin</a>
-</div>
-<div id='endinfo'>
-</div>
-<div id='thankinfo'>
-<h1>Thanks</h1>
-The bandit will learn from the data you have given it and will hopefully get cleverer...
-<a class='starter' href='javascript:again()'>Play again</a>
-</div>
+<div id='infobox'></div>
 <script type='text/javascript' src='bandit.js'></script>

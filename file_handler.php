@@ -2,6 +2,31 @@
 
 include_once("config.php");
 
+function start_lock(){
+    global $SAVEPATH;
+    $f = fopen($SAVEPATH."_lock_","w");
+    fwrite($f,"locked");
+    fclose($f);
+}
+
+function get_lock(){
+    global $SAVEPATH;
+    $r = file_get_contents($SAVEPATH."_lock_");
+    $r = substr($r,0,4);
+    if($r=="free"){
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function end_lock(){
+    global $SAVEPATH;
+    $f = fopen($SAVEPATH."_lock_","w");
+    fwrite($f,"free");
+    fclose($f);
+}
+
 function load_all(){
     global $SAVEPATH;
     $c = file_get_contents($SAVEPATH."data.txt");

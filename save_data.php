@@ -1,6 +1,12 @@
 <?php
 
 include("file_handler.php");
+if(get_lock()){
+    echo("locked");
+} else {
+
+start_lock();
+
 include("matrix_operations.php");
 
 $a = Array();
@@ -22,5 +28,9 @@ add_data($R,$bs,$d,$a);
 
 savebs($bs);
 saveR($R);
+
+end_lock();
+
+}
 
 ?>

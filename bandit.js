@@ -108,7 +108,7 @@ function start(){
     for(var n=0;n<25;n++){document.getElementById("bandit-"+n).style.backgroundColor = cols[0]}
     running = true
     playback = false
-    document.getElementById("startinfo").style.display = "none"
+    hide_infobox()
     startTime = millinow()
     ticker = setInterval(tick,50)
 }
@@ -142,8 +142,7 @@ function stop(){
                 }
                 out += ": <span id='r"+i+"'><a href='javascript:yes("+i+")'>yes</a> <a href='javascript:no("+i+")'>no</a></span>"
             }
-            document.getElementById("endinfo").innerHTML = out
-            document.getElementById("endinfo").style.display = "block"
+            infobox(out)
         }
     }
     resulter.open('POST','get_result.php',true);
@@ -151,20 +150,28 @@ function stop(){
     resulter.send(postdata());
 }
 
+function hide_infobox(){
+    document.getElementById("infobox").style.display = "none"
+}
+function infobox(txt){
+    document.getElementById("infobox").innerHTML = txt
+    document.getElementById("infobox").style.display = "block"
+}
+
 function thanks(){
-    document.getElementById("endinfo").style.display = "none"
-    document.getElementById("thankinfo").style.display = "block"
+    infobox("<h1>Thanks</h1>The bandit will learn from the data you have given it and will hopefully get cleverer...<a class='starter' href='javascript:again()'>Play again</a>")
+}
+function saving(){
+    infobox("<h1>Saving data</h1>Please wait");
 }
 function again(){
-    document.getElementById("thankinfo").style.display = "none"
-    document.getElementById("startinfo").style.display = "block"
+    infobox("<h1>The Bandit</h1><a class='starter' href='javascript:start()'>Begin</a>")
 }
 function yes(i){
     actuals[i] = resultls[i]
     document.getElementById("r"+i).innerHTML = "<b>yes</b>"
     if(count(actuals,-1)==0){
         savedata()
-        thanks()
     }
 }
 function no(i){
@@ -172,16 +179,20 @@ function no(i){
     document.getElementById("r"+i).innerHTML = "<b>no</b>"
     if(count(actuals,-1)==0){
         savedata()
-        thanks()
     }
 }
-function savedata(r){
+function savedata(){
+    saving()
     var saver;
     if(window.XMLHttpRequest){saver=new XMLHttpRequest();}
     else {saver=new ActiveXObject('Microsoft.XMLHTTP');}
     saver.onreadystatechange=function(){
         if (saver.readyState==4 && saver.status==200){
-            thanks()
+            if (saver.responseText == "locked"){
+                setTimeout(savedata,1000)
+            } else {
+                thanks()
+            }
         }
     }
     saver.open('POST','save_data.php',true);
@@ -217,3 +228,4 @@ function tick(){
 }
 
 document.getElementById("timer").innerHTML = "0:20"
+again()
