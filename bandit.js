@@ -15,6 +15,7 @@ function count(arr, value){
 
 resultls = Array()
 actuals = Array(-1,-1,-1,-1);
+corrects = Array(-1,-1,-1,-1);
 running = false
 blocks = Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 
@@ -105,6 +106,7 @@ function start(){
     data = dataDefault.slice()
     prev = 0
     actuals = Array(-1,-1,-1,-1);
+    corrects = Array(-1,-1,-1,-1);
     for(var n=0;n<25;n++){document.getElementById("bandit-"+n).style.backgroundColor = cols[0]}
     running = true
     playback = false
@@ -169,6 +171,7 @@ function again(){
 }
 function yes(i){
     actuals[i] = resultls[i]
+    corrects[i] = 1
     document.getElementById("r"+i).innerHTML = "<b>yes</b>"
     if(count(actuals,-1)==0){
         savedata()
@@ -176,6 +179,7 @@ function yes(i){
 }
 function no(i){
     actuals[i] = 1-resultls[i]
+    corrects[i] = 0
     document.getElementById("r"+i).innerHTML = "<b>no</b>"
     if(count(actuals,-1)==0){
         savedata()
@@ -198,12 +202,19 @@ function savedata(){
     saver.open('POST','save_data.php',true);
     saver.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     // TODO: send and keep track of number of correct / incorrect guesses for each category
-    saver.send(postactual()+"&"+postdata());
+    saver.send(postactual()+"&"+postdata()+"&"+correctdata());
 }
 function postdata(){
     send_me = Array()
     for(var i=0;i<data.length;i++){
         send_me[send_me.length] = "data"+i+"="+data[i]
+    }
+    return send_me.join("&")
+}
+function correctdata(){
+    send_me = Array()
+    for(var i=0;i<corrects.length;i++){
+        send_me[send_me.length] = "correct"+i+"="+corrects[i]
     }
     return send_me.join("&")
 }

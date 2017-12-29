@@ -45,10 +45,10 @@ function wrapup($ls){
     return join(",",$ls);
 }
 
-function save($data, $ans){
+function save($data, $ans, $scores){
     global $SAVEPATH;
     $f = fopen($SAVEPATH."data.txt","a");
-    fwrite($f, wrapup($data)."|".wrapup($ans)."\n");
+    fwrite($f, wrapup($data)."|".wrapup($ans)."|".wrapup($scores)."\n");
     fclose($f);
 }
 
@@ -60,6 +60,16 @@ function saveR($R){
 function loadR(){
     global $SAVEPATH;
     return loadMatrix($SAVEPATH."R.matrix");
+}
+
+function savescores($scores){
+    global $SAVEPATH;
+    saveMatrix($scores, $SAVEPATH."scores.txt");
+}
+
+function loadscores(){
+    global $SAVEPATH;
+    return loadMatrix($SAVEPATH."scores.txt");
 }
 
 function savebs($b){

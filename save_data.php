@@ -17,8 +17,18 @@ $d = Array();
 for($i=0;isset($_POST["data".$i]);$i++){
     $d[] = $_POST["data".$i];
 }
+$s = Array();
+for($i=0;isset($_POST["score".$i]);$i++){
+    $s[] = $_POST["score".$i];
+}
 
-save($d,$a);
+save($d,$a,$s);
+
+$scores = loadscores();
+for($i=0;i<count($s);$i++){
+    $scores[$i][$s[$i]]++;
+}
+savescores($scores);
 
 
 $bs = loadbs();
