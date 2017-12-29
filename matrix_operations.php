@@ -21,35 +21,29 @@ function print_matrix_one_line($A){
 
 function givens($a,$b){
     $d = sqrt($a*$a+$b*$b);
-    if($d==0){return Array(0,0);}
+    if($d==0){return Array(1/sqrt(2),1/sqrt(2));}
     return Array($a/$d,-$b/$d);
 }
 
-function add_data(&$R,&$bs,$a,$d){
-    $cs = Array();
-    $ss = Array();
+function add_data(&$R,&$bs,$d,$a){
     for($j=0;$j<count($bs);$j++){
-        $cs[] = $R[$j][$j];
-        $ss[] = $a[$j];
-    }
-    for($j=0;$j<count($bs);$j++){
-        list($c,$s) = givens($R[$j][$j],$a[$j]);
-        $R[$j][$j] = $c*$R[$j][$j] - $s * $a[$j];
+        list($c,$s) = givens($R[$j][$j],$d[$j]);
+        $R[$j][$j] = $c*$R[$j][$j] - $s * $d[$j];
         $t1 = Array();
         $t2 = Array();
         for($k=$j+1;$k<count($bs);$k++){
             $t1[$k] = $R[$j][$k];
-            $t2[$k] = $a[$k];
+            $t2[$k] = $d[$k];
         }
         for($k=$j+1;$k<count($bs);$k++){
             $R[$j][$k] = $c * $t1[$k] - $s * $t2[$k];
-            $a[$k] = $s * $t1[$k] + $c * $t2[$k];
+            $d[$k] = $s * $t1[$k] + $c * $t2[$k];
         }
         $t1 = $bs[$j];
-        $t2 = $d;
+        $t2 = $a;
         for($k=0;$k<count($bs[$j]);$k++){
             $bs[$j][$k] = $c*$t1[$k] - $s * $t2[$k];
-            $d[$k] = $s*$t1[$k] + $c * $t2[$k];
+            $a[$k] = $s*$t1[$k] + $c * $t2[$k];
         }
     }
 }
@@ -58,6 +52,18 @@ function inner_product($a,$b){
     $out = 0;
     for($i=0;$i<count($a);$i++){
         $out += $a[$i] * $b[$i];
+    }
+    return $out;
+}
+
+function mat_inner_product($A,$b){
+    $out = Array();
+    for($j=0;$j<count($A[0]);$j++){
+        $e = 0;
+        for($i=0;$i<count($A);$i++){
+            $e += $A[$i][$j] * $b[$i];
+        }
+        $out[] = $e;
     }
     return $out;
 }

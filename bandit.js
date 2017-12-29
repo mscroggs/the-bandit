@@ -135,7 +135,11 @@ function stop(){
             out += "Is the bandit correct?"
             for(var i=0;i<resultls.length;i++){
                 out += "<br />"
-                out += banditResults[i][resultls[i]]
+                if(resultls[i]>0.5){
+                    out += banditResults[i][1]
+                } else {
+                    out += banditResults[i][0]
+                }
                 out += ": <span id='r"+i+"'><a href='javascript:yes("+i+")'>yes</a> <a href='javascript:no("+i+")'>no</a></span>"
             }
             document.getElementById("endinfo").innerHTML = out
@@ -177,7 +181,6 @@ function savedata(r){
     else {saver=new ActiveXObject('Microsoft.XMLHTTP');}
     saver.onreadystatechange=function(){
         if (saver.readyState==4 && saver.status==200){
-            alert(saver.responseText)
             thanks()
         }
     }

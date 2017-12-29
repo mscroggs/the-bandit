@@ -78,6 +78,24 @@ if(!abseq($mat[0][0],1) || !abseq($mat[0][1],2.6) || !abseq($mat[1][0],0) || !ab
 }
 echo("=============\n");
 
+/*************************************/
+/**** test mat_inner_product ****/
+/*************************************/
+$mat = Array(Array(1,2,3),Array(4,5,6));
+$vec = Array(1,2);
+echo("testing mat_inner_product\n");
+$res = mat_inner_product($mat,$vec);
+if(!abseq($res[0],9) || !abseq($res[1],12) || !abseq($res[2],15)){
+    Recho("<!> FAIL <!>\n");
+    echo($res[0]." ".res[1]." ".$res[2]."\n");
+    echo("Should be  9 12 15\n");
+    $fail++;
+} else {
+    Gecho("PASS\n");
+    $pass++;
+}
+echo("=============\n");
+
 
 
 /*******************/

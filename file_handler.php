@@ -23,7 +23,7 @@ function wrapup($ls){
 function save($data, $ans){
     global $SAVEPATH;
     $f = fopen($SAVEPATH."data.txt","a");
-    fwrite($f, wrapup($data)."|".wrapup($ans));
+    fwrite($f, wrapup($data)."|".wrapup($ans)."\n");
     fclose($f);
 }
 
