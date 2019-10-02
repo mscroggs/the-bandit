@@ -19,7 +19,6 @@ function get_lock(){
         return true;
     }
 }
-
 function end_lock(){
     global $SAVEPATH;
     $f = fopen($SAVEPATH."_lock_","w");
@@ -64,12 +63,12 @@ function loadR(){
 
 function savescores($scores){
     global $SAVEPATH;
-    saveMatrix($scores, $SAVEPATH."scores.txt");
+    saveMatrix(Array($scores), $SAVEPATH."scores.txt","a");
 }
 
 function loadscores(){
     global $SAVEPATH;
-    return loadMatrix($SAVEPATH."scores.txt");
+    return loadFinalRow($SAVEPATH."scores.txt");
 }
 
 function savebs($b){
@@ -82,15 +81,23 @@ function loadbs(){
     return loadMatrix($SAVEPATH."b.vector");
 }
 
-function saveMatrix($mat, $file){
+function saveMatrix($mat, $file, $typ="w"){
     $out = "";
     foreach($mat as $row){
         $out .= join(",",$row);
         $out .= "\n";
     }
-    $f = fopen($file, "w");
+    $f = fopen($file, $typ);
     fwrite($f, $out);
     fclose($f);
+}
+
+function split_row($row){
+    $out = Array();
+    foreach(explode(",",$row) as $e){
+        $out[] = floatval($e);
+    }
+    return $out;
 }
 
 function loadMatrix($file){
@@ -98,9 +105,19 @@ function loadMatrix($file){
     $c = explode("\n",$c);
     $out = Array();
     foreach($c as $row){if($row != ""){
-        $out[] = explode(",",$row);
+        $out[] = split_row($row);
     }}
     return $out;
+}
+
+function loadFinalRow($file){
+    $c = file_get_contents($file);
+    $c = explode("\n",$c);
+    $out = Array();
+    foreach($c as $row){if($row != ""){
+        $out = $row;
+    }}
+    return split_row($out);
 }
 
 ?>

@@ -8,7 +8,7 @@ function zeromat($r,$c){
 
 saveR(zeromat(20,20));
 savebs(zeromat(20,4));
-savescores(zeromat(4,2));
+savescores(zeromat(1,8));
 
 $f = fopen($SAVEPATH."data.txt","w");
 fclose($f);

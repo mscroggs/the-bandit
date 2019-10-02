@@ -10,6 +10,7 @@ for($i=0;isset($_POST["data".$i]);$i++){
 
 $R = loadR();
 $bs = loadbs();
+
 $x = solve_upper_tri($R, $bs);
 $res = mat_inner_product($x, $data);
 

@@ -125,8 +125,13 @@ function stop(){
             resultls = resulter.responseText.split(",")
             out = "<h1>Results</h1>"
             out += "The bandit thinks that you are "
+            alert(resultls)
             for(var i=0;i<resultls.length;i++){
-                out += banditResults[i][resultls[i]]
+                if(resultls[i]>0.5){
+                    out += banditResults[i][1]
+                } else {
+                    out += banditResults[i][0]
+                }
                 if(i==resultls.length-2){
                     out += ", and "
                 } else if(i<resultls.length-2){
@@ -192,6 +197,7 @@ function savedata(){
     else {saver=new ActiveXObject('Microsoft.XMLHTTP');}
     saver.onreadystatechange=function(){
         if (saver.readyState==4 && saver.status==200){
+            alert(saver.responseText)
             if (saver.responseText == "locked"){
                 setTimeout(savedata,1000)
             } else {

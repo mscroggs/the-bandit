@@ -1,5 +1,5 @@
 <?php
 
-$SAVEPATH = "";
+$SAVEPATH = "/path/where/data/will/be/saved/";
 
 ?>

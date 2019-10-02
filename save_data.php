@@ -5,41 +5,44 @@ if(get_lock()){
     echo("locked");
 } else {
 
-start_lock();
+    start_lock();
 
-include("matrix_operations.php");
+    include("matrix_operations.php");
 
-$a = Array();
-for($i=0;isset($_POST["actual".$i]);$i++){
-    $a[] = $_POST["actual".$i];
-}
-$d = Array();
-for($i=0;isset($_POST["data".$i]);$i++){
-    $d[] = $_POST["data".$i];
-}
-$s = Array();
-for($i=0;isset($_POST["score".$i]);$i++){
-    $s[] = $_POST["score".$i];
-}
+    $a = Array();
+    for($i=0;isset($_POST["actual".$i]);$i++){
+        $a[] = $_POST["actual".$i];
+    }
+    $d = Array();
+    for($i=0;isset($_POST["data".$i]);$i++){
+        $d[] = $_POST["data".$i];
+    }
+    $s = Array();
+    for($i=0;isset($_POST["correct".$i]);$i++){
+        $s[] = $_POST["correct".$i];
+    }
 
-save($d,$a,$s);
+    save($d,$a,$s);
 
-$scores = loadscores();
-for($i=0;i<count($s);$i++){
-    $scores[$i][$s[$i]]++;
-}
-savescores($scores);
+    $scores = loadscores();
+    print_r($s);
+    print_r($scores);
+    for($i=0;$i<count($s);$i++){
+        $scores[$i*2+$s[$i]]++;
+    }
+
+    savescores($scores);
 
 
-$bs = loadbs();
-$R = loadR();
+    $bs = loadbs();
+    $R = loadR();
 
-add_data($R,$bs,$d,$a);
+    add_data($R,$bs,$d,$a);
 
-savebs($bs);
-saveR($R);
+    savebs($bs);
+    saveR($R);
 
-end_lock();
+    end_lock();
 
 }
 
