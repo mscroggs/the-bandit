@@ -124,7 +124,7 @@ function stop(){
         if (resulter.readyState==4 && resulter.status==200){
             resultls = resulter.responseText.split(",")
             out = "<h1>Results</h1>"
-            out += "The bandit thinks that you are "
+            out += "<p>The Bandit thinks that you are "
             alert(resultls)
             for(var i=0;i<resultls.length;i++){
                 if(resultls[i]>0.5){
@@ -139,16 +139,17 @@ function stop(){
                 }
             }
             out += ". "
-            out += "Is the bandit correct?"
+            out += "Is The Bandit correct?</p>"
+            out += "<p>"
             for(var i=0;i<resultls.length;i++){
-                out += "<br />"
                 if(resultls[i]>0.5){
                     out += banditResults[i][1]
                 } else {
                     out += banditResults[i][0]
                 }
-                out += ": <span id='r"+i+"'><a href='javascript:yes("+i+")'>yes</a> <a href='javascript:no("+i+")'>no</a></span>"
+                out += ": <span id='r"+i+"'><a href='javascript:yes("+i+")'>yes</a> <a href='javascript:no("+i+")'>no</a></span><br />"
             }
+            out += "</p>"
             infobox(out)
         }
     }
@@ -166,13 +167,13 @@ function infobox(txt){
 }
 
 function thanks(){
-    infobox("<h1>Thanks</h1>The bandit will learn from the data you have given it and will hopefully get cleverer...<a class='starter' href='javascript:again()'>Play again</a>")
+    infobox("<h1>Thanks</h1><p>The Bandit will learn from the data you have given it and will hopefully get cleverer...</p><a class='starter' href='javascript:again()'>Play again</a><a class='starter' href='/bandit/info'>More info</a>")
 }
 function saving(){
-    infobox("<h1>Saving data</h1>Please wait");
+    infobox("<h1>Saving data</h1><p>Please wait</p>");
 }
 function again(){
-    infobox("<h1>The Bandit</h1><a class='starter' href='javascript:start()'>Begin</a>")
+    infobox("<h1>The Bandit</h1><p>Click/touch the squares to change their colour. After 20 seconds, The Bandit will make some predictions about you.</p><a class='starter' href='javascript:start()'>Begin</a>")
 }
 function yes(i){
     actuals[i] = resultls[i]

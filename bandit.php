@@ -10,7 +10,7 @@ a.starter:hover {color:red}
 #timer {width:415px;text-align:right;font-family:monospace;font-size:12pt}
 #infobox {display:block;position:relative;border:3px solid black;
           background-color:white;text-align:center;box-shadow:0px 0px 4px 2px white;color:black;
-          width:301px;height:351px;top:-389px;left:57px; margin-bottom:-357px;display:none}
+          width:281px;height:331px;top:-389px;left:57px; margin-bottom:-357px;display:none;padding:10px}
 
 #startinfo h1, #endinfo h1, #thankinfo h1 {margin:5px}
 

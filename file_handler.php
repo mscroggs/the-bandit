@@ -61,9 +61,9 @@ function loadR(){
     return loadMatrix($SAVEPATH."R.matrix");
 }
 
-function savescores($scores){
+function savescores($scores,$typ="a"){
     global $SAVEPATH;
-    saveMatrix(Array($scores), $SAVEPATH."scores.txt","a");
+    saveMatrix(Array($scores), $SAVEPATH."scores.txt",$typ);
 }
 
 function loadscores(){

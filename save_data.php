@@ -24,11 +24,20 @@ if(get_lock()){
 
     save($d,$a,$s);
 
+
+    // scores format:
+    // guessed type 1,correct type 1,guessed type 2,correct type 2, (repeat 4 times)
+
     $scores = loadscores();
     print_r($s);
     print_r($scores);
     for($i=0;$i<count($s);$i++){
-        $scores[$i*2+$s[$i]]++;
+        if($s[$i]){
+            $scores[$i*4+$a[$i]*2]++;
+            $scores[$i*4+$a[$i]*2+1]++;
+        } else {
+            $scores[$i*4+(1-$a[$i])*2]++;
+        }
     }
 
     savescores($scores);
