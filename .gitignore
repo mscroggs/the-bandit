@@ -7,3 +7,4 @@ debug
 _lock_
 scores.txt
 .htaccess
+img/*.png

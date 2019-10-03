@@ -29,8 +29,4 @@ of The Bandit's predictions have been correct.</p>
 
 <p>The following graphs show how the proportion of The Bandit's predicitions that were correct have changed with time.</p>
 
-______
-______
-______
-______
-
+<img src='/img/all.png'>

@@ -38,7 +38,7 @@ if(get_lock()){
         } else {
             $scores[$i*4+(1-$a[$i])*2]++;
         }
-    }
+    } // TODO: This is adding to the wrong place....
 
     savescores($scores);
 
